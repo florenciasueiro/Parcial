@@ -1,0 +1,18 @@
+const agregarBtn = document.getElementById('agregar');
+const contenedor = document.getElementById('contenedor');
+const clonable = document.querySelector('.clonar');
+
+agregarBtn.addEventListener('click', (e) => {
+  e.preventDefault();
+  const clon = clonable.cloneNode(true);
+  const aux = clon;
+  aux.input.value ="";
+
+  // const inputsClonados = clon.querySelectorAll('.input');
+  // inputsClonados.forEach((input) => {
+  //   input.value = '';
+  // });
+  contenedor.insertAdjacentElement('beforeend', aux);
+  const ocultoBtn = document.getElementById('oculto');
+  ocultoBtn.classList.add('hidden');
+});
