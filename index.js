@@ -1,285 +1,381 @@
 'use strict';
-/* Funcionamiento del boton de agregar pistas (clonador) */
+
 const agregarBtn = document.getElementById('agregar');
-const contenedor = document.getElementById('contenedor');
-const clonable = document.querySelector('.clonar');
-const canciones = []
-agregarBtn.addEventListener('click', (e) => {
-  e.preventDefault();
-  const clon = clonable.cloneNode(true);
-  const inputsClonados = clon.querySelectorAll('.input');
+const cargarBtn = document.getElementById('btn');
 
+const discos = []
+let pistas = [];
+const codigo = document.getElementById('codigo');
+const span = document.getElementById('alert');
+let contador = 0;
 
-
-  inputsClonados.forEach((input) => {
-	canciones.push(input.value);
-    input.value = '';
-  });
-  contenedor.insertAdjacentElement('beforebegin', clon);
-//   const ocultoBtn = document.getElementById('oculto');
-//   ocultoBtn.classList.add('hidden');
-});
-
-let discos= []
-
-function crearListaHTML(arrayObjetos) {
-	let listaHTML = document.createElement("ul");
-  
-	if (Array.isArray(arrayObjetos)) {
-	  arrayObjetos.forEach((objeto) => {
-		let elementoLi = document.createElement("li");
-		elementoLi.textContent = JSON.stringify(objeto);
-		listaHTML.appendChild(elementoLi);
-	  });
-	} else if (typeof arrayObjetos === "object" && arrayObjetos !== null) {
-	  Object.keys(arrayObjetos).forEach((key) => {
-		let elementoLi = document.createElement("li");
-		elementoLi.textContent = key;
-		elementoLi.appendChild(crearListaHTML(arrayObjetos[key]));
-		listaHTML.appendChild(elementoLi);
-	  });
+$("#pista, #duracion, #verMas").on("keydown", (e) => {
+	if (e.keyCode === 13) {
+		$("#nuevoItem").click()
+		$("#pista").val("")
+		$("#duracion").val("")
+		$("#searchInput").val("")
 	}
-  
-	return listaHTML;
+})
+
+$("#titleInput").on("keydown", (e) => {
+	if (e.keyCode == 13) {
+		$("#titleInput").blur();
+	}
+})
+
+function mostrarTodo(pistas){
+	let datos = [0,0];
+	//1 = max
+	//0 = total
+	pistas.forEach(pista => {
+		if (pista.duracionEnSeg > datos[1]){
+		datos[1] = pista.duracionEnSeg;
+	}
+	datos[0] += pista.duracionEnSeg;
+}
+)
+return datos}
+
+
+function animateElement(elementId) {
+	const element = $(elementId);
+	gsap.to(element, 0.1, { x: -4 });
+	gsap.to(element, 0.1, { delay: 0.1, x: 4 });
+	gsap.to(element, 0.1, { delay: 0.2, x: -4 });
+	gsap.to(element, 0.1, { delay: 0.3, x: 4 });
+	gsap.to(element, 0.1, { delay: 0.4, x: 0 });
   }
   
 
+  $("#verMas").on("click", (e) => {  
+	if (
+	  $("#searchInput").val() == "" ||
+	  isNaN($("#searchInput").val()) ||
+	  $("#searchInput").val() < 1 ||
+	  $("#searchInput").val() > 999 ||
+	  !(discos.some(disco => disco.codigo === $("#searchInput").val()))
+	) {
+	  animateElement("#searchInput");
+	  $("#red").text(
+		`Debes llenar el campo con un código numérico único, no menor a 1 ni mayor a 999.`
+	  );
+	} else {
+
+	  const disco = discos.find(disco => disco.codigo === $("#searchInput").val());
+	  
+		const todo = mostrarTodo(disco.pistas)
+	  const pistasHtml = disco.pistas
+		.map(pista => {
+		  return `
+			<div>
+			  <a class="linkLista" href="#">
+				<div class="listaPista">
+				  <p>${pista.nombre}</p>
+				  <p>${pista.duracion}</p>
+				</div>
+			  </a>
+			</div>`;
+		})
+		.join('');
   
-	function Cargar(e) {
-	e.preventDefault();
-	
-	let nombre = document.getElementById("nombre").value;
-	let autor = document.getElementById("autor").value;
-	let codigo = document.getElementById("codigo").value;
-	let pistas = [];
-	
-	let pistaElements = document.getElementsByClassName("pista");
-	for (let i = 0; i < pistaElements.length; i++) {
-		let pistaElement = pistaElements[i];
-		let pista = pistaElement.getElementsByTagName("input")[0].value;
-		let duracion = pistaElement.getElementsByTagName("input")[1].value;
-			let pistaData = {
-				pista: pista,
-				duracion: duracion
-			};
-		pistas.push(pistaData);
+	  $(".mostrarContenido").append(`
+		<div class="nombrePistas">
+		  <div class="junto">
+			<p class="info nombre">${disco.nombre} </p>
+			<p>(${disco.autor})</p>
+		  </div>
+		  <i class="fas fa-plus"></i>
+		</div>
+		<div class="autorCodigo">
+		  <span class="pistasCount">${disco.pistas.length} Canciones</span>
+		  <p class="info codigo">Código: ${disco.codigo}</p>
+		  <p>El disco dura: ${todo[0]}s</p>
+		  <p>Su pista más larga dura: ${todo[1]}s</p>
+		  <p>El promedio de duración es de: ${todo[0] / disco.pistas.length}s</p>
+		</div>
+		</div>
+		<div class="section-dropdown-sub">
+		  ${pistasHtml}
+		</div>
+	  `);
 	}
-	
-	let disco = {
+  });
+  
+
+
+$("#nuevoItem").on("click", (e) => {
+	if ($("#pista").val() == "") {
+		animateElement("#pista");
+		$("#red").text(`Debes llenar el campo de pista`)
+	} else if ($("#duracion").val() == "" || isNaN($("#duracion").val()) || $("#duracion").val() < 0 || $("#duracion").val() > 7200) {
+		animateElement("#duracion")
+		$("#red").text(`Debes llenar el campo de duracion con un numero entre 0 y 7200 (segundos)`)
+	} else {
+	  const pista = $("#pista").val();
+	  const duracion = $("#duracion").val();
+
+	  $("#red").text(``)
+
+	  if (duracion > 180) {
+		$("#red").text(`La pista supera los 180 segundos y está en rojo`)
+	  }
+  
+	const duracionEnMinutos = parseInt(duracion);
+	const horas = Math.floor(duracionEnMinutos / 60);
+	const minutos = duracionEnMinutos % 60;
+	const duracionFormateada = ("0" + horas).slice(-2) + ":" + ("0" + minutos).slice(-2);
+
+
+
+
+	  const pistaObj = {
+		nombre: pista,
+		duracion: duracionFormateada,
+		duracionEnSeg: parseInt(duracion)
+	  };
+  
+	  pistas.push(pistaObj);
+
+  
+	  $(".item").append(
+		`<div class="itemInner">
+		  <i class="fa fa-music"></i>
+		  <p>Pista: ${pista}</p>
+		  <p>Duracion: ${duracionFormateada}</p>
+		  <button class="removeItemBtn">
+			<i class="fas fa-trash-alt"></i>
+		  </button>
+		</div>`
+	  )
+	  
+  
+	  $("#pista").val("");
+	  $("#duracion").val("");
+  
+	  const newItem = e.target;
+  
+	  gsap.to(".itemsWrapper, .item", .3, {paddingBottom: 30, ease: Back.easeOut});
+	  gsap.to(".itemsWrapper, .item", .3, {delay: .15, paddingBottom: 8, y: 0, ease: Back.easeOut});
+	}
+  });
+
+  function Cargar(e) {
+	if ($("#nombre").val() == "") {
+	  animateElement("#nombre");
+	  $("#red").text(`Debes llenar el campo de nombre`)
+	} else if ($("#autor").val() == "") {
+	  animateElement("#autor");
+	  $("#red").text(`Debes llenar el campo de autor`)
+	} else if ($("#codigo").val() == "" || isNaN($("#codigo").val()) || $("#codigo").val() < 1 || $("#codigo").val() > 999 || discos.some(disco => disco.codigo === $("#codigo").val())) {
+	  animateElement("#codigo");
+	  $("#red").text(`Debes llenar el con un código numérico único del, no menor a 1, ni mayor a 999.`)
+	} else if (pistas.length < 1) {
+	  animateElement("#pista");
+	  animateElement("#duracion");
+	  animateElement("#nuevoItem");
+	  $("#red").text(`Debes llenar los campos de pista y duración`)
+	} else {
+	  const nombre = $("#nombre").val();
+	  const autor = $("#autor").val();
+	  const codigo = $("#codigo").val();
+  
+	  $("#red").text(``)
+  
+	  const disco = {
 		nombre: nombre,
 		autor: autor,
 		codigo: codigo,
-		pistas: pistas,
+		pistas: pistas
+	  };
+  
+	  discos.push(disco);
+	  pistas = [];
+	  contador++;
+	  $("#contador").text(`(${contador})`)
+  
+	  $("#nombre").val('');
+	  $("#autor").val('');
+	  $("#codigo").val('');
+	  $(".itemInner").remove();
+	  $(".section-dropdown").empty();
+  
+	  discos.forEach(disco => {
+		const todo = mostrarTodo(disco.pistas)
+
+		const pistasHtml = disco.pistas
+		  .map(pista => {
+			return `<div>
+			  <a class="linkLista" href="#">
+			  <div class="listaPista">
+			  <p>${pista.nombre}</p>
+			  <p>${pista.duracion}</p>
+			  </div>
+			  </a>
+			</div>`;
+		  })
+		  .join('');
+  
+		$(".section-dropdown").append(`
+		  <input class="dropdown-sub" type="checkbox" id="dropdown-sub" name="dropdown-sub"/>
+			<label id="disco" class="for-dropdown-sub disco infoGrupo" for="dropdown-sub">
+			<div class="">
+				<div class="nombrePistas">
+					<div class="junto">
+						<p class="info nombre">${disco.nombre} </p>
+						<p>(${disco.autor})</p>
+						</div>
+						<i class="fas fa-plus"></i>
+				</div>
+				<div class="autorCodigo">
+				<span class="pistasCount">${disco.pistas.length} Canciones</span>
+					<p class="info codigo">Código: ${disco.codigo}</p>
+					<p>El disco dura: ${todo[0]}s</p>
+					<p>Su pista mas larga dura: ${todo[1]}s</p>
+					<p>El promedio de duración es de: ${todo[0]/disco.pistas.length}s</p>
+				</div>
+			</div>
+			</label>
+			<div class="section-dropdown-sub">
+			${pistasHtml}
+		  </div>
+		`);
+	  });
 	}
-	discos.push(disco);
+  }
+  
 
-	document.getElementById("formulario").reset();
-	const contenedor = document.getElementById("contenedor");
-	contenedor.replaceChildren()
+  $(".item").on("click", "i.fa-hand-point-right", (e) => {
+	const handPoint = e.target
+	const completedItem = e.target.parentElement
+	const text = completedItem.getElementsByTagName('p')
 	
-	
-	let resultadoDiv = document.getElementById("resultado");
-	resultadoDiv.innerHTML = `
-	${crearListaHTML(discos).innerHTML}
-	`;
-}  
+	$(text).css({"text-decoration": "line-through"})
+	gsap.to(handPoint, .3, {rotate: -30, transformOrigin: "center", ease: Back.easeOut})
+	gsap.to(handPoint, .3, {delay: .15, rotate: 0, transformOrigin: "center", ease: Back.easeOut})
+  })
+  
+  $(".item").on("click", "button.removeItemBtn", (e) => {
+	const removeItem = e.target;
+	const itemInner = removeItem.parentElement;
+	const index = $(itemInner).index();
+  
+	pistas.splice(index, 1);
+  
+	$(itemInner).remove();
+  
+	gsap.to(".itemsWrapper, .item", 0, {paddingBottom: 52});
+	gsap.to(".itemsWrapper, .item", .3, {paddingBottom: 8, ease: Back.easeOut});
+  });
+  
+  
 
-
-
-/* Cambio de imagenes del reproductor */
-
-
-
-/* Reproductor funcionalidad */
-
-// const audioPlayer = document.getElementById("audio-player");
-// const playBtn = document.getElementById("play-btn");
-// const pauseBtn = document.getElementById("pause-btn");
-// const prevBtn = document.getElementById("prev-btn");
-// const nextBtn = document.getElementById("next-btn");
-
-// const songs = [
-// 	{
-// 		title: "Canción 1",
-// 		image: "https://example.com/song1-image.jpg",
-// 		audio: "https://example.com/song1.mp3"
-// 	},
-// 	{
-// 		title: "Canción 2",
-// 		image: "https://example.com/song2-image.jpg",
-// 		audio: "https://example.com/song2.mp3"
-// 	},
-// 	{
-// 		title: "Canción 3",
-// 		image: "https://example.com/song3-image.jpg",
-// 		audio: "https://example.com/song3.mp3"
-// 	}
-// ];
-
-// let currentSongIndex = 0;
-
-// function loadSong() {
-// 	audioPlayer.src = songs[currentSongIndex].audio;
-// }
-
-// function playSong() {
-// 	audioPlayer.play();
-// }
-
-// function pauseSong() {
-// 	audioPlayer.pause();
-// }
-
-// function prevSong() {
-// 	currentSongIndex--;
-// 	if (currentSongIndex < 0) {
-// 		currentSongIndex = songs.length - 1;
-// 	}
-// 	loadSong();
-// 	playSong();
-// }
-
-// function nextSong() {
-// 	currentSongIndex++;
-// 	if (currentSongIndex >= songs.length) {
-// 		currentSongIndex = 0;
-// 	}
-// 	loadSong();
-// 	playSong();
-// }
-
-// playBtn.addEventListener("click", playSong);
-// pauseBtn.addEventListener("click", pauseSong);
-// prevBtn.addEventListener("click", prevSong);
-// nextBtn.addEventListener("click", nextSong);
-
-// loadSong();
-
-
-
-
-
-/*
- * SUEIRO, FLORENCIA | APELLIDO, NOMBRE
- */
-
-
-
-
-// Discos:
-// let discos = [];
-
-// Función Cargar:
-
-// const Cargar = () => {
-	
-    // Cositas:
-
-	// let disco = {
-	// 	Nombre: 'El lado oscuro de la Programación',
-	// 	Autor: 'Los Programadores Anónimos',
-	// 	Codigo: 1,
-	// 	Pistas: [
-	// 		{
-	// 			Nombre: 'Esa cajita loca llamada letiablecita',
-	// 			Duracion: 200,
-	// 		},
-	// 		{
-	// 			Nombre: 'Nunca quise ser un NaN',
-	// 			Duracion: 180,
-	// 		},
-	// 		{
-	// 			Nombre: 'No quiero programar',
-	// 			Duracion: 90,
-	// 		},
-	// 		{
-	// 			Nombre: 'Bajo presión',
-	// 			Duracion: 240,
-	// 		},
-	// 		{
-	// 			Nombre: 'La odisea de las letiables privadas',
-	// 			Duracion: 120,
-	// 		},
-	// 		{
-	// 			Nombre: 'Sr. Programador',
-	// 			Duracion: 720,
-	// 		},
-	// 	],
-	// };
-// let disco = new Object();
-
-
-// 	let nombre = document.getElementById('nombre').value;
-// 	let autor = document.getElementById('autor').value;
-// 	let codigo = document.getElementById('codigo').value;
-// 	let pista = document.getElementById('pista').value;
-// 	let duracion = document.getElementById('duracion').value;
-
-
-
-	// let elementoLista = document.createElement('li');
-	// elementoLista.textContent = 'Nombre: ' + nombre + ', Autor: ' + autor + ', Código: ' + codigo + ', Pista: ' + pista + ', Duración: ' + duracion;
-	
-
-// 	alert("this");
-
-// };
-	
-
-
-// // Función Mostrar:
-// const Mostrar = () => {
-//     // letiable para ir armando la cadena:
-//     let html = '';
-
-//     // Cositas:
-
-//     // Si modificaste el nombre de la letiable para ir armando la cadena, también hacelo acá:
-//     // document.getElementById('info').innerHTML = html; // <--- ahí es acá
-// };
-
-// Todas las funciones que necesites:
-
-
-
-
-
-
-// Aca empieza mi codigo funcional
-
-
-
-
-// Obtener referencia al botón de envío
-
-// Agregar evento de escucha al botón de envío
-// agregarBtn.addEventListener('click', function(event) {
-//   event.preventDefault(); // Evitar el envío del formulario
 
   
-//   let listaElementos = document.getElementById('elementosDevueltos');
+  gsap.set(".fa-pencil-alt", {opacity: 0, rotate: -180, transformOrigin: "center"})
+  gsap.set("#titleInput, #pista, #duracion", {border: "1px solid transparent", boxShadow: "0 0 0 rgba(211, 220, 248, .3)"})
   
-//   // Obtener los valores del disco
-
-
-
- 
-//   // Agregar el elemento <li> a la lista <ul>
-//   listaElementos.appendChild(elementoLista);
+  $("#titleInput").on("mouseenter", () => {
+	  gsap.to(".fa-pencil-alt", .3, {rotate: 0, opacity: 1, transformOrigin: "center", ease: Back.easeOut})
+  })
   
-//   // Limpiar los campos de entrada si es necesario
-//   document.getElementById('nombre').value = '';
-//   document.getElementById('autor').value = '';
-//   document.getElementById('codigo').value = '';
-//   document.getElementById('pista').value = '';
-//   document.getElementById('duracion').value = '';
+  $("#titleInput").on("mouseleave", () => {
+	if ($("#titleInput").is(":focus")) {
+	  gsap.to(".fa-pencil-alt", .3, {rotate: 0, opacity: 1, transformOrigin: "center", ease: Back.easeOut})
+	} else if (!($("#titleInput").is(":focus"))) {
+	  gsap.to(".fa-pencil-alt", .3, {rotate: -180, opacity: 0, transformOrigin: "center", ease: Back.easeOut})
+	}
+  })
+  
+  $("#titleInput").on("focus", () => {
+	gsap.to(".fa-pencil-alt", .3, {rotate: 0, opacity: 1, transformOrigin: "center", ease: Back.easeOut})
+	gsap.to("#titleInput", .3, {border: "1px solid #e7ecfb", boxShadow: "0 0 12px rgba(211, 220, 248, .3)"})
+  })
+  
+  $("#titleInput").on("focusout", () => {
+	gsap.to(".fa-pencil-alt", .3, {rotate: -180, opacity: 0, transformOrigin: "center", ease: Back.easeOut})
+	gsap.to("#titleInput", .3, {border: "1px solid transparent", boxShadow: "0 0 12px rgba(211, 220, 248, 0)"})
+  })
+  
+  $(".item").on("mouseenter", ".itemInner", (e) => {
+	const trashBtn = $(e.target.querySelector(".removeItemBtn"))
+	gsap.to(trashBtn, .3, {opacity: 1})
+  })
+  
+  $(".itemInner").on("mouseenter", ".removeItemBtn", (e) => {
+	const trashBtn = e.target
+	gsap.to(trashBtn, .3, {opacity: 1})
+  })
+  
+  $(".innerItem").on("mouseleave", ".removeItemBtn", (e) => {
+	gsap.to(trashBtn, .3, {opacity: 0})
+  })
+  
+  $(".item").on("mouseleave", ".itemInner", (e) => {
+	const trashBtn = $(e.target.querySelector(".removeItemBtn"))
+	gsap.to(trashBtn, .3, {opacity: 0})
+  })
+  
+  $(".itemInner").on("mouseleave", ".removeItemBtn", (e) => {
+	const trashBtn = e.target
+	gsap.to(trashBtn, .3, {opacity: 0})
+  })
+  
+  $("#pista").on("focus", () => {
+	gsap.to("#pista", .3, {border: "1px solid #e7ecfb", boxShadow: "0 0 12px rgba(211, 220, 248, .3)"})
+  })
+  
+  $("#pista").on("focusout", () => {
+	gsap.to("#pista", .3, {border: "1px solid transparent", boxShadow: "0 0 12px rgba(211, 220, 248, 0)"})
+  })
+  
+  $("#nuevoItem").on("mouseenter", () => {
+	gsap.to(".mas", .3, {rotate: 90, ease: Back.easeOut})
+  })
+  
+  $("#nuevoItem").on("mouseleave", () => {
+	gsap.to(".mas", .3, {rotate: 0, ease: Back.easeOut})
+  })
 
 
-// });
+
+var searchButton = document.getElementById("searchButton");
+var searchModal = document.getElementById("searchModal");
+var closeModal = document.getElementsByClassName("close")[0];
+
+searchButton.addEventListener("click", function() {
+  searchModal.style.display = "block";
+});
+
+closeModal.addEventListener("click", function() {
+  searchModal.style.display = "none";
+});
+
+window.addEventListener("click", function(event) {
+  if (event.target == searchModal) {
+    searchModal.style.display = "none";
+  }
+});
+
+var searchSubmit = document.getElementById("searchSubmit");
+var searchInput = document.getElementById("searchInput");
 
 
-// devolver los elementos
 
+var listButton = document.getElementById("listButton");
+var listModal = document.getElementById("listModal");
+var closeListModal = document.getElementsByClassName("close")[0];
 
-  // Crear un elemento <li> para cada elemento capturado
+listButton.addEventListener("click", function() {
+  listModal.style.display = "block";
+});
 
+closeListModal.addEventListener("click", function() {
+  listModal.style.display = "none";
+});
+
+window.addEventListener("click", function(event) {
+  if (event.target == listModal) {
+    listModal.style.display = "none";
+  }
+});

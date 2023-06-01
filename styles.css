@@ -1,18 +1,6 @@
-/**
- * Versión 1.0.0
- */
-@charset "utf-8";
 
-/**
- * Fonts
- */
 @import url('https://fonts.googleapis.com/css?family=Montserrat:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap');
 
-/**
- * Mobile
- */
-
-/** General */
 html {
     box-sizing: border-box;
 }
@@ -24,20 +12,16 @@ html {
 * {
     margin: 0;
     padding: 0;
-    font-size: 10px;
     line-height: 1;
     font-family: 'Montserrat', sans-serif;
     font-weight: 400;
+}
+
+.noContenido{
     color: white;
 }
 
-/** Body */
-body {
-    /* background-color: #134F5C; */
-    color: white;
-}
 
-/** Header */
 header {
     display: flex;
     flex-direction: column;
@@ -46,7 +30,6 @@ header {
     padding: 2em;
 }
 
-/** Encabezados */
 h1,
 h2 {
     font-family: 'Montserrat';
@@ -61,7 +44,6 @@ h2 {
     color: white;
 }
 
-/** Main */
 main {
     display: flex;
     flex-direction: column;
@@ -312,27 +294,19 @@ main button:hover {
 .btn{
     color: white;
     display: flex;
+    background-color: rgba(255,255,255,0.2);
     font-size: 20px;
         align-items: center;
         justify-content: center;
         width: -webkit-fill-available;
         height: 40px;
-        background: transparent;
         border-radius: 100px;
         margin: 15px;
         cursor: pointer;
         transition: background 0.1s ease-in-out;
         border: none;
 }
-.btn:hover {
-        /* background: hsl(250, 10%, 25%); */
-      }
-      .btn:active {
-  box-shadow: 5px 5px 10px 2.5px rgba(0, 0, 0, 0.2),
-          -5px -5px 10px 2.5px rgba(77, 71, 100, 0.3),
-          -1px -1px 4px 2px rgba(77, 71, 100, 0.4);
-          /* background: #3a3842; */
-}
+
 
 
 
@@ -429,11 +403,6 @@ main button:hover {
 
 /*Reproductor*/
 
-.pagina{
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-}
-
 .Right{
     display: flex;
     justify-content: center;
@@ -461,14 +430,10 @@ main button:hover {
 	cursor: pointer;
 }
 
-.button:hover {
-	/* background-color: #666; */
-}
-
 .musicplayer{
     backdrop-filter: blur(10px);
-    width: 100%;
-    margin: 20px;
+    width: 75vw;
+    margin: 50px auto;
 }
 
 .musicControls{
@@ -494,19 +459,8 @@ main button:hover {
   }
   
 
-
-
-
-
   /*media player*/
 
-
-  
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
 
 :root {
     font-size: 14px;
@@ -521,9 +475,8 @@ a {
     margin: auto;
     background: transparent;
     backdrop-filter: blur(10px);
-    box-shadow: 2px 2px 7px 0px rgba(0,0,0,0.3), -1px -1px 2px 0px rgba(255,255,255,0.9);
+    box-shadow: 3px 3px 7px 0px rgba(0,0,0,0.3), -1px -1px 8px 1px rgba(255,255,255,0.69);
     border-radius: 15px;
-    border: 1px solid rgb(223, 223, 223);
     position: relative;
 }
 
@@ -556,8 +509,7 @@ a {
 }
 
 .info {
-    margin: auto;
-    text-align: center;
+    margin: 10px auto;
 }
 .info h1 {
     font-weight: 500;
@@ -635,7 +587,7 @@ input::placeholder{
     text-align: center;
 }
 
-.fas{
+.fa-plus{
     font-size: 20px!important;
 }
 
@@ -659,4 +611,580 @@ input::placeholder{
     display: flex;
     width: 100%;
     height: 500px;
+}
+
+.listaPista{
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.info{
+    color: white;
+}
+
+
+  
+  #listWrapper {
+    border-radius: 9px;
+    border: 1px solid #e7ecfb;
+    box-shadow: 0 0 30px rgba(211, 220, 248, .3);
+    padding: 30px;
+    background: transparent;
+    backdrop-filter: blur(10px);
+  }
+  
+  /* List title */
+  #title {
+    position: relative;
+  }
+  
+  .titleInput::placeholder {
+    color: white;
+  }
+  
+  /* List title pencil */
+  .fa-pencil-alt {
+    font-size: 18px;
+    border-radius: 50%;
+    position: absolute;
+    right: 24px;
+    pointer-events: none;
+    color: #a8baf0;
+  }
+  
+  /* Separator */
+  #separator {
+    margin: 12px 0;
+    box-shadow: 0 12px 12px rgba(211, 220, 248, .3);
+    border-top: 0;
+    border-right: 0;
+    border-left: 0;
+    max-width: 100%;
+    height: 10px;
+  }
+  
+  /* To do items wrapper */
+  /* #itemsWrapper {
+    padding: 8px 8px;
+  } */
+  
+  /* To do item */
+  .item {
+    width: 100%;
+    font-size: 18px;
+    font-family: "Open Sans", sans-serif;
+    border-radius: 12px;
+    border: 0;
+    padding: 9px 12px;
+    color: #3f455f;
+    position: relative;
+  }
+  
+  .itemInner {
+    padding: 9px 0;
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+  }
+  
+  .itemInner p {
+    margin: 10px;
+    pointer-events: none;
+    color: white;
+  }
+  
+  /* Item buttons */
+  .fa-trash-alt {
+    pointer-events: none;
+    color: #a8baf0;
+    font-size: 18px;
+  }
+  
+  .removeItemBtn {
+    position: absolute;
+    right: 4px;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+  }
+  
+  .fa-hand-point-right {
+    color: #a8baf0;
+    margin-right: 9px;
+    font-size: 24px;
+    cursor: pointer;
+  }
+  
+  /* Add a new item section */
+  #addNewItemWrapper {
+    width: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  
+  #pista, .titleInput, #duracion {
+    width: 100%;
+    font-family: "Open Sans", sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    outline: none;
+    border-radius: 9px;
+    padding: 12px;
+    background: rgba(255,255,255,0.2 );
+    margin: 10px;
+    }
+  
+  #nuevoItem {
+    /* position: absolute;
+    right: 0; */
+    height: 100%;
+    padding: 0 1.25px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    background-color: rgba(255,255,255,0.2);
+    border-radius: 9px;
+  }
+  #verMas {
+    /* position: absolute;
+    right: 0; */
+    height: 100%;
+    padding: 0 1.25px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    background-color: rgba(255,255,255,0.2);
+    border-radius: 9px;
+  }
+
+  .buscarVerMas{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .fas, .fa{
+    color: white!important;
+    margin: 15px;
+  }
+
+  input{
+    color: white;
+  }
+
+
+
+
+  /*DROPDOWN*/
+
+
+
+  
+
+/* Please ❤ this if you like it! */
+
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap');
+
+.sec-center {
+  position: relative;
+  max-width: 100%;
+  text-align: center;
+  z-index: 200;
+}
+[type="checkbox"]:checked,
+[type="checkbox"]:not(:checked){
+  position: absolute;
+  left: -9999px;
+  opacity: 0;
+  pointer-events: none;
+}
+.dark-light:checked + label,
+.dark-light:not(:checked) + label{
+  position: fixed;
+  top: 40px;
+  right: 40px;
+  z-index: 20000;
+  display: block;
+  border-radius: 50%;
+  width: 46px;
+  height: 46px;
+  cursor: pointer;
+  transition: all 200ms linear;
+  box-shadow: 0 0 25px rgba(255,235,167,.45);
+}
+.dark-light:checked + label{
+  transform: rotate(360deg);
+}
+.dark-light:checked + label:after,
+.dark-light:not(:checked) + label:after{
+  position: absolute;
+  content: '';
+  top: 1px;
+  left: 1px;
+  overflow: hidden;
+  z-index: 2;
+  display: block;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  background-color: #102770;
+  background-image: url('https://assets.codepen.io/1462889/moon.svg');
+  background-size: 20px 20px;
+  background-repeat: no-repeat;
+  background-position: center;
+  transition: all 200ms linear;
+  opacity: 0;
+}
+.dark-light:checked + label:after {
+  opacity: 1;
+}
+.dark-light:checked + label:before,
+.dark-light:not(:checked) + label:before{
+  position: absolute;
+  content: '';
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  z-index: 1;
+  display: block;
+  border-radius: 50%;
+  width: 46px;
+  height: 46px;
+  background-color: #48dbfb;
+  background-image: url('https://assets.codepen.io/1462889/sun.svg');
+  background-size: 25px 25px;
+  background-repeat: no-repeat;
+  background-position: center;
+  transition: all 200ms linear;
+}
+.dark-light:checked + label:before{
+  background-color: #000;
+}
+.light-back{
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  background-color: #fff;
+  overflow: hidden;
+  background-image: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/1462889/pat-back.svg');
+  background-position: center;
+  background-repeat: repeat;
+  background-size: 4%;
+  height: 100%;
+  width: 100%;
+  transition: all 200ms linear;
+  opacity: 0;
+}
+.dark-light:checked ~ .light-back{
+  opacity: 1;
+}
+.dropdown:checked + label,
+.dropdown:not(:checked) + label{
+  position: relative;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 2;
+  height: 50px;
+  transition: all 200ms linear;
+  border-radius: 4px;
+  width: 45vw;
+  letter-spacing: 1px;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-align-items: center;
+  -moz-align-items: center;
+  -ms-align-items: center;
+  align-items: center;
+  -webkit-justify-content: center;
+  -moz-justify-content: center;
+  -ms-justify-content: center;
+  justify-content: center;
+  -ms-flex-pack: center;
+  text-align: center;
+  border: none;
+  background-color: rgba(255,255,255,0.2);
+  backdrop-filter: blur(10px);
+  cursor: pointer;
+  color: white;
+  box-shadow: 0 12px 35px 0 rgba(255,235,167,.15);
+}
+.dark-light:checked ~ .sec-center .forDropdown{
+  background-color: white;
+  color: white;
+}
+
+.forDropdown{
+  display: flex;
+  justify-content: space-evenly;
+}
+.dropdown:checked + label:before,
+.dropdown:not(:checked) + label:before{
+  position: fixed;
+  top: 0;
+  left: 0;
+  content: '';
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  cursor: auto;
+  pointer-events: none;
+}
+.dropdown:checked + label:before{
+  pointer-events: auto;
+}
+.dropdown:not(:checked) + label .uil {
+  font-size: 24px;
+  margin-left: 10px;
+  transition: transform 200ms linear;
+}
+.dropdown:checked + label .uil {
+  transform: rotate(180deg);
+  font-size: 24px;
+  margin-left: 10px;
+  transition: transform 200ms linear;
+}
+.section-dropdown {
+  position: absolute;
+  padding: 5px;
+  background-color: transparent;
+  backdrop-filter: blur(10px);
+  top: 70px;
+  left: 0;
+  width: 100%;
+  border-radius: 4px;
+  display: block;
+  box-shadow: 0 14px 35px 0 rgba(9,9,12,0.4);
+  z-index: 2;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(20px);
+  transition: all 200ms linear;
+}
+.dark-light:checked ~ .sec-center .section-dropdown {
+  background-color: #fff;
+  box-shadow: 0 14px 35px 0 rgba(9,9,12,0.15);
+}
+.dropdown:checked ~ .section-dropdown{
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.dark-light:checked ~ .sec-center .section-dropdown:after {
+  border-bottom: 8px solid #fff;
+}
+
+a {
+  position: relative;
+  color: #fff;
+  transition: all 200ms linear;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+  font-size: 15px;
+  border-radius: 2px;
+  padding: 5px 0;
+  padding-left: 20px;
+  padding-right: 15px;
+  margin: 2px 0;
+  text-align: left;
+  text-decoration: none;
+  display: block;
+}
+
+a .uil {
+  font-size: 22px;
+}
+.dropdown-sub:checked + label,
+.dropdown-sub:not(:checked) + label{
+  position: relative;
+  color: #fff;
+  transition: all 200ms linear;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+  font-size: 15px;
+  border-radius: 2px;
+  padding: 5px 0;
+  padding-left: 20px;
+  padding-right: 15px;
+  text-align: left;
+  text-decoration: none;
+  align-items: center;
+  display: block;
+  margin: 5px;
+    cursor: pointer;
+}
+.dropdown-sub:checked + label .uil,
+.dropdown-sub:not(:checked) + label .uil{
+  font-size: 22px;
+}
+.dropdown-sub:not(:checked) + label .uil {
+  transition: transform 200ms linear;
+}
+.dropdown-sub:checked + label .uil {
+  transform: rotate(135deg);
+  transition: transform 200ms linear;
+}
+
+.dark-light:checked ~ .sec-center .section-dropdown .for-dropdown-sub{
+  color: #102770;
+}
+
+.section-dropdown-sub {
+  position: relative;
+  display: block;
+  width: 100%;
+  pointer-events: none;
+  opacity: 0;
+  max-height: 0;
+  padding-left: 10px;
+  padding-right: 3px;
+  overflow: hidden;
+  transition: all 200ms linear;
+  border-radius: 5px;
+}
+
+.linkLista:hover{
+  background-color: rgba(255,255,255,0.2);
+}
+
+
+.dropdown-sub:checked ~ .section-dropdown-sub{
+  pointer-events: auto;
+  opacity: 1;
+  max-height: 999px;
+}
+.section-dropdown-sub a {
+  font-size: 14px;
+}
+.section-dropdown-sub a .uil {
+  font-size: 20px;
+}
+.logo {
+	position: fixed;
+	top: 50px;
+	left: 40px;
+	display: block;
+	z-index: 11000000;
+  background-color: transparent;
+  border-radius: 0;
+  padding: 0;
+	transition: all 250ms linear;
+}
+.logo:hover {
+  background-color: transparent;
+}
+.logo img {
+	height: 26px;
+	width: auto;
+	display: block;
+  transition: all 200ms linear;
+}
+.dark-light:checked ~ .logo img{
+  filter: brightness(10%);
+}
+
+@media screen and (max-width: 991px) {
+.logo {
+	top: 30px;
+	left: 20px;
+}
+.dark-light:checked + label,
+.dark-light:not(:checked) + label{
+  top: 20px;
+  right: 20px;
+}
+}
+
+
+
+.nombre{
+  font-size: xx-large;
+  font-weight: 600;
+}
+
+
+.nombrePistas{
+  display: inline-flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.autorCodigo{
+  display: block;
+  justify-content: start;
+}
+.infoGrupo{
+  display: grid;
+  grid-template-columns: 4fr 1fr;
+}
+
+
+.junto{
+  display: inline-flex;
+  align-items: baseline;
+}
+
+
+
+
+.new-container{
+  width: 50vw;
+  margin: auto;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+  background-color: rgba(255,255,255,0.2);
+  backdrop-filter: blur(15px);
+  margin: 15% auto;
+  border-radius: 20px;
+  padding: 20px;
+  border: none;
+  width: 50vw;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Estilos adicionales */
+#searchInput {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+#searchSubmit {
+  padding: 5px 10px;
 }
